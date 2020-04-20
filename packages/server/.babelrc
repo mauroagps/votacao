@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "transform-inline-imports-commonjs",
+    "transform-object-rest-spread"
+  ]
+}

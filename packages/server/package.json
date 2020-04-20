@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predev": "sleep 40 && npm update && ./bin/migrate",
+    "dev": "NODE_ENV=development nodemon -L -q --exec \"npm start\" --watch src --watch bin",
+    "start": "node bin/start"
+  },
+  "devDependencies": {
+    "jest": "24.7.1",
+    "nodemon": "1.18.11"
+  },
+  "dependencies": {
+    "@brunocarvalho/error-handler": "0.2.1",
+    "babel-plugin-transform-inline-imports-commonjs": "1.2.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-register": "6.26.0",
+    "bluebird": "3.5.4",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "elasticsearch": "15.4.1",
+    "express": "4.16.4",
+    "express-slim-router": "2.1.5",
+    "google-recaptcha": "1.1.0",
+    "joi": "14.3.1",
+    "lodash": "4.17.11",
+    "moment": "2.24.0",
+    "morgan": "1.9.1"
+  },
+  "jest": {
+    "verbose": true,
+    "coverageReporters": [
+      "text-summary"
+    ]
+  }
+}

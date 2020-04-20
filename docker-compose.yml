@@ -1,0 +1,35 @@
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch:5.6.16-alpine
+    #volumes:
+    #  - ./database:/usr/share/elasticsearch/data
+  server:
+    build: ./packages/server
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - elasticsearch
+    volumes:
+      - /usr/app/www/node_modules
+      - ./packages/server:/usr/app/www
+    command: npm run dev
+    working_dir: /usr/app/www
+  web:
+    build: ./packages/client
+    container_name: web
+    volumes:
+      - /usr/app/www/build
+      - /usr/app/www/node_modules
+      - ./packages/client:/usr/app/www
+    command: npm start
+  nginx:
+    image: nginx:1.14-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - web
+    depends_on:
+      - server
+    ports:
+      - 80:80

@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+require('babel-register')
+
+const console = require('console')
+const { Participant, Survey } = require('../src/models')
+
+console.log('> running database migrations')
+
+async function main () {
+  const participant = new Participant()
+  const survey = new Survey()
+
+  try {
+    /**
+     * @type {string[]}
+     */
+    const participants = await participant.create([
+      {
+        name: 'Carolina',
+        photo: 'https://conteudo.imguol.com.br/c/entretenimento/b1/2019/01/15/carolina-uma-das-participantes-do-bbb19-1547578528952_v2_150x150.jpg'
+      },
+      {
+        name: 'Hariany',
+        photo: 'https://conteudo.imguol.com.br/c/entretenimento/f7/2019/01/15/hariany-uma-das-participantes-do-bbb19-1547584156722_v2_150x150.jpg'
+      }
+    ]).catch(console.error)
+
+    const surveyId = await survey.create({ participants })
+
+    for (const index of [ ...new Array(1).keys() ]) {
+      await survey.vote.create({
+        survey: surveyId,
+        participant: participants[ Math.floor(Math.random() * 2) ]
+      }).then(() => console.log(`> vote ${index} registered`))
+    }
+
+    console.log('> migration process complete')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+main()
